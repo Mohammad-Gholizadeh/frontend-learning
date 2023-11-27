@@ -12,3 +12,11 @@
         align-items: center;
     }
 }
+
+.users_list_item.active .users_list_arrow_icon{
+    transform: rotate(180deg);
+}
+
+.users_list_item.active , .users_list_item.active .collapsible-header{
+    background-color: rgba(190, 185, 185, 0.322);
+}
