@@ -14,7 +14,7 @@
   <link rel="icon" type="image/x-icon" href="/assets/images/favicon.ico">
 </head>
 
-<body>
+<body x-data="usersData">
 
   <!-- navbar section -------Start------->
   <nav class="blue darken-3 z-depth-5 top_navbar">
@@ -55,7 +55,7 @@
 <section id="top_actions_section" class="row m-b-0 container">
   <!-- add button --------->
 <div class="p-l-10 p-r-10 p-t-10 col s12 m3 l2">
-    <button id="add_user_button" class="waves-effect waves-light btn blue darken-2 p-l-30 p-r-30 w-full rounded_pill flex-c ">
+    <button id="add_user_button" class="waves-effect waves-light btn blue darken-2 p-l-30 p-r-30 w-full rounded_pill flex-c" x-on:click="showAdModal = true">
         <i class="material-icons m-r-5">add</i>
         Add User
     </button>
@@ -76,25 +76,57 @@
 
 </section>
 
-<section class="user_list_section">
+<!-- Preloader ----Start--->
+<!-- <div x-show="isLoading" class="center-align">
+  <div class="preloader-wrapper small active">
+    <div class="spinner-layer spinner-green-only">
+      <div class="circle-clipper left">
+        <div class="circle"></div>
+      </div><div class="gap-patch">
+        <div class="circle"></div>
+      </div><div class="circle-clipper right">
+        <div class="circle"></div>
+      </div>
+    </div>
+  </div>
+</div> -->
+<template x-if="isLoading">
+  <div class="center-align">
+    <div class="preloader-wrapper small active">
+      <div class="spinner-layer spinner-green-only">
+        <div class="circle-clipper left">
+          <div class="circle"></div>
+        </div><div class="gap-patch">
+          <div class="circle"></div>
+        </div><div class="circle-clipper right">
+          <div class="circle"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
+<!-- Preloader ----End--->
+
+<section class="user_list_section" x-init="getUsers()">
     <ul class="collapsible hide-on-med-and-up">
+      <template x-for="user in users">
         <li class="users_list_item">
             <div class="collapsible-header">
                 <i class="material-icons blue-text darken-2 users_list_arrow_icon trans-0-6">arrow_drop_down_circle</i>
-                Mohammad Gholizadeh
+                <span x-text="user.name"></span>
             </div>
             <div class="collapsible-body">
                 <div class="p-all-5">
                     <span class="f-bold">Username</span>
-                    <span>Mgh007753</span>
+                    <span x-text="user.usename"></span>
                 </div>
                 <div class="p-all-5">
                     <span class="f-bold">Email</span>
-                    <span>Mgh007753@gmail.com</span>
+                    <span x-text="user.email"></span>
                 </div>
                 <div class="p-all-5">
                     <span class="f-bold">Address : </span>
-                    <span>berlin - example street ... </span>
+                    <span x-text="user.address.city+' - '+user.address.street"></span>
                 </div>
                 <div class="p-all-5 flex-l-m">
                     <span class="f-bold">Action : </span>
@@ -103,56 +135,7 @@
                 </div>
             </div>
         </li>
-        <li class="users_list_item">
-            <div class="collapsible-header">
-                <i class="material-icons blue-text darken-2 users_list_arrow_icon trans-0-6">arrow_drop_down_circle</i>
-                Mehdi Gholizadeh
-            </div>
-            <div class="collapsible-body">
-                <div class="p-all-5">
-                    <span class="f-bold">Username</span>
-                    <span>Mgh897654</span>
-                </div>
-                <div class="p-all-5">
-                    <span class="f-bold">Email</span>
-                    <span>Unknown</span>
-                </div>
-                <div class="p-all-5">
-                    <span class="f-bold">Address : </span>
-                    <span>berlin - example street ... </span>
-                </div>
-                <div class="p-all-5 flex-l-m">
-                    <span class="f-bold">Action : </span>
-                    <i class="material-icons red-text m-l-5 m-r-5">delete_forever</i>
-                    <i class="material-icons orange-text darken-3 m-l-5 m-r-5">edit</i>
-                </div>
-            </div>
-        </li>
-        <li class="users_list_item">
-            <div class="collapsible-header">
-                <i class="material-icons blue-text darken-2 users_list_arrow_icon trans-0-6">arrow_drop_down_circle</i>
-                Unknown
-            </div>
-            <div class="collapsible-body">
-                <div class="p-all-5">
-                    <span class="f-bold">Username</span>
-                    <span>Mgh987645</span>
-                </div>
-                <div class="p-all-5">
-                    <span class="f-bold">Email</span>
-                    <span>Mgh987645@live.com</span>
-                </div>
-                <div class="p-all-5">
-                    <span class="f-bold">Address : </span>
-                    <span>berlin - example street ... </span>
-                </div>
-                <div class="p-all-5 flex-l-m">
-                    <span class="f-bold">Action : </span>
-                    <i class="material-icons red-text m-l-5 m-r-5">delete_forever</i>
-                    <i class="material-icons orange-text darken-3 m-l-5 m-r-5">edit</i>
-                </div>
-            </div>
-        </li>
+      </template>
     </ul>
 
     <div class="hide-on-med-and-down show-on-medium-and-up container">
@@ -167,51 +150,20 @@
             <th>Action</th>
           </tr>
         </thead>
-        <tbody>
-          <tr>
-            <td>1</td>
-            <td>Mohammad Gholizadeh</td>
-            <td>Mgh007753</td>
-            <td>Mgh007753@gmail.com</td>
-            <td>berlin - example street ...</td>
-            <td>
-              <i class="material-icons orange-text darken-3 m-l-5 m-r-5 hov-pointer">edit</i>
-              <i class="material-icons red-text m-l-5 m-r-5 hov-pointer">delete_forever</i>
-            </td>
-          </tr>
-          <tr>
-            <td>1</td>
-            <td>Mohammad Gholizadeh</td>
-            <td>Mgh007753</td>
-            <td>Mgh007753@gmail.com</td>
-            <td>berlin - example street ...</td>
-            <td>
-              <i class="material-icons orange-text darken-3 m-l-5 m-r-5 hov-pointer">edit</i>
-              <i class="material-icons red-text m-l-5 m-r-5 hov-pointer">delete_forever</i>
-            </td>
-          </tr>
-          <tr>
-            <td>1</td>
-            <td>Mohammad Gholizadeh</td>
-            <td>Mgh007753</td>
-            <td>Mgh007753@gmail.com</td>
-            <td>berlin - example street ...</td>
-            <td>
-              <i class="material-icons orange-text darken-3 m-l-5 m-r-5 hov-pointer">edit</i>
-              <i class="material-icons red-text m-l-5 m-r-5 hov-pointer">delete_forever</i>
-            </td>
-          </tr>
-          <tr>
-            <td>1</td>
-            <td>Mohammad Gholizadeh</td>
-            <td>Mgh007753</td>
-            <td>Mgh007753@gmail.com</td>
-            <td>berlin - example street ...</td>
-            <td>
-              <i class="material-icons orange-text darken-3 m-l-5 m-r-5 hov-pointer">edit</i>
-              <i class="material-icons red-text m-l-5 m-r-5 hov-pointer">delete_forever</i>
-            </td>
-          </tr>
+        <tbody class="desktop_table_body">
+          <template x-for="user in users">
+            <tr>
+              <td x-text="user.id"></td>
+              <td x-text="user.name"></td>
+              <td x-text="user.username"></td>
+              <td x-text="user.email"></td>
+              <td x-text="user.address.city+' - '+user.address.street"></td>
+              <td>
+                <i class="material-icons orange-text darken-3 m-l-5 m-r-5 hov-pointer">edit</i>
+                <i class="material-icons red-text m-l-5 m-r-5 hov-pointer">delete_forever</i>
+              </td>
+            </tr>
+          </template>
         </tbody>
       </table>
     </div>
@@ -235,8 +187,8 @@
 
 </section>
 
-<div class="add_user_modal_back dis-none"></div>
-<div class="add_user_modal container rounded_top_30 trans-0-3">
+<div class="add_user_modal_back" x-bind:class="{'dis-none' : !showAdModal}" x-on:click="showAdModal = false"></div>
+<div class="add_user_modal container rounded_top_30 trans-0-3" x-bind:class="{'show' : showAdModal}">
   <div class="row p-t-10 p-b-10 p-r-40 p-l-40 center-on-small-only">
     <h5>
       <i class="material-icons m-r-10 m-l-10 pos-relative top-4">person_add</i>
@@ -268,6 +220,10 @@
 
   <!-- content section -------End------->
 
+  <script defer src="/assets/js/axios.js"></script>
+  <!-- <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script> -->
+  <script defer src="/assets/js/alpine.js"></script>
+  <script src="/assets/js/alpineJsControllers/usersController.js"></script>
   <!-- Compiled and minified JavaScript
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script> -->
   <script src="/assets/materialize/js/materialize.min.js"></script>
