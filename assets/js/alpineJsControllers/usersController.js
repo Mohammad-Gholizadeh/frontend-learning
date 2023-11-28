@@ -21,6 +21,20 @@ document.addEventListener('alpine:init', () => {
                 let start = (this.currentPage * this.itemsCount) - this.itemsCount
                 let end = this.currentPage * this.itemsCount
                 this.pageUsers = this.users.slice(start,end)
+            },
+            nextPage(){
+                this.currentPage++
+                if (this.currentPage > this.pageCount) {
+                    this.currentPage = this.pageCount
+                }
+                this.pagination()
+            },
+            prevPage(){
+                this.currentPage--
+                if (this.currentPage < 1) {
+                    this.currentPage = 1
+                }
+                this.pagination()
             }
         }))
 })
