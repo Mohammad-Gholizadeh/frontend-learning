@@ -187,8 +187,8 @@
 
 </section>
 
-<div class="add_user_modal_back" x-bind:class="{'dis-none' : !showAdModal}" x-on:click="showAdModal = false"></div>
-<div class="add_user_modal container rounded_top_30 trans-0-3" x-bind:class="{'show' : showAdModal}">
+<div class="add_user_modal_back" x-show="showAdModal" x-transition:enter.duration.500ms x-on:click="showAdModal = false"></div>
+<div class="add_user_modal container rounded_top_30 trans-0-3" x-bind:class="showAdModal && 'show'">
   <div class="row p-t-10 p-b-10 p-r-40 p-l-40 center-on-small-only">
     <h5>
       <i class="material-icons m-r-10 m-l-10 pos-relative top-4">person_add</i>
