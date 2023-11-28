@@ -13,6 +13,7 @@ document.addEventListener('alpine:init', () => {
                 name:"",
                 username:"",
                 email:"",
+                address:"",
             },
             getUsers(){
                 this.isLoading = true
@@ -60,11 +61,21 @@ document.addEventListener('alpine:init', () => {
                     if (res.status == 201) {
                         this.mainUsers.push(res.data)
                         this.showAdModal = false
+                        this.handleResetForm()
                         this.pagination()
+                        M.toast({html: 'Success!', classes: 'rounded green'});
                     }
                 }).finally(()=>{
                     this.isLoading = false
                 })
+            },
+            handleResetForm(){
+                this.newUserInfo = {
+                    name:"",
+                    username:"",
+                    email:"",
+                    address:"",
+                }
             }
         }))
 })
